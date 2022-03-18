@@ -1,5 +1,4 @@
-{
-    "questions": [
+[
         {
             "status": "ac",
             "questionId": "1",
@@ -23752,5 +23751,4 @@
             ],
             "__typename": "QuestionNode"
         }
-    ]
-}
+]

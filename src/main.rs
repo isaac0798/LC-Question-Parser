@@ -1,10 +1,36 @@
-use std::fs;
-use serde_json;
+use std::fs::File;
+use serde::{Deserialize, Serialize};
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Question {
+    status: Option<String>,
+    questionId: Option<String>,
+    questionFrontendId: Option<String>,
+    title: String,
+    titleSlug: Option<String>,
+    translatedTitle: Option<String>,
+    stats: Option<String>,
+    difficulty: Option<String>,
+    topicTags: Vec<Topics>,
+    isPaidOnly: bool,
+    __typename: Option<String>
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+struct Topics {
+    name: String,
+    translatedName: Option<String>,
+    slug: Option<String>,
+    __typename: Option<String>
+}
 
 fn main() {
     let question_path = "src/questions.json";
-    let questions = fs::read_to_string(question_path).expect("Cant find path");
+    let questions = File::open(question_path).expect("Cant find path");
 
-    let res: serde_json::Value = serde_json::from_str(&questions).expect("Unable to parse");
-    println!("{}", res["questions"][0]);
+    let questions: Vec<Question> = serde_json::from_reader(questions).expect("Unable to parse");
+    
+    for question in questions.iter() {
+        println!("Title {}", question.title);
+    }
 }
